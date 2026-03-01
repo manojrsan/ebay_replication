@@ -1,6 +1,8 @@
-# did_analysis.py
-# Computes the difference-in-differences estimate for the eBay paid search experiment.
+# did_analysis.py — DID Analysis Script
+# Estimates the average treatment effect of turning off eBay's paid search.
 # Method: Compare pre-post log revenue changes between treatment and control DMAs.
+# Uses preprocessed pivot tables from preprocess.py.
+# Output: LaTeX table in output/tables/did_table.tex
 # Reference: Blake et al. (2014), Taddy Ch. 5
 import pandas as pd
 import numpy as np
