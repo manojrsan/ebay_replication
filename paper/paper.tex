@@ -1,0 +1,117 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\title{The Effect of Paid Search Advertising on Revenue: \\
+	A Replication of the eBay Natural Experiment}
+\author{Mariano Sanchez}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\section{Introduction}
+	
+	Digital advertising is one of the largest categories of marketing expenditure worldwide, with firms spending billions of dollars annually on search engine marketing (SEM). Despite its widespread use, measuring the causal impact of paid search advertising on revenue is challenging. Advertising intensity is typically chosen strategically by firms in response to expected demand, making naive comparisons between high- and low-advertising periods subject to severe endogeneity bias.
+	
+	This paper replicates the core empirical exercise from Blake, Nosko, and Tadelis (2014), who studied the effect of paid search advertising at eBay using a large-scale natural experiment. The research question is straightforward: \textit{What is the causal effect of paid search advertising on eBay’s revenue?} To answer this, we exploit geographic variation in advertising exposure generated when eBay temporarily turned off paid search advertising in a subset of U.S. markets. Using a difference-in-differences (DID) design, we compare changes in revenue across treated and untreated markets before and after the advertising shutdown.
+	
+	Understanding the effectiveness of paid search has important implications for marketing return-on-investment (ROI), budget allocation, and firm strategy—especially for well-known brands that may already benefit from strong organic traffic.
+	
+	\section{Experimental Setting}
+	
+	The setting follows the natural experiment described in Blake et al. (2014). eBay agreed to stop bidding on Google AdWords in a subset of designated market areas (DMAs) beginning on May 22, 2012. The treatment lasted approximately eight weeks. 
+	
+	Out of 210 DMAs in the dataset, 65 were assigned to the treatment group, where paid search advertising was turned off (denoted by \texttt{search\_stays\_on = 0}). The remaining 145 DMAs served as the control group, where paid search continued as usual (\texttt{search\_stays\_on = 1}).
+	
+	Importantly, this was not a fully randomized controlled trial. The largest DMAs were excluded from treatment for business reasons. As a result, the treatment and control groups differ in baseline revenue levels, with control markets generally exhibiting higher average revenue. Because of these systematic differences, a simple comparison of post-treatment revenue levels would be misleading. Instead, we rely on a difference-in-differences framework that focuses on relative changes over time.
+	
+	\section{Data and Empirical Strategy}
+	
+	The dataset contains daily revenue observations for 210 DMAs from April through July 2012. Each observation includes:
+	\begin{itemize}
+		\item Date
+		\item DMA identifier
+		\item Treatment group indicator
+		\item Post-treatment indicator (after May 22, 2012)
+		\item Revenue
+	\end{itemize}
+	
+	To estimate the causal effect of turning off paid search, we implement a standard DID estimator:
+	
+	\[
+	Y_{it} = \alpha + \beta \text{Treatment}_i + \delta \text{Post}_t + 
+	\gamma (\text{Treatment}_i \times \text{Post}_t) + \varepsilon_{it}
+	\]
+	
+	where $Y_{it}$ is log revenue for DMA $i$ on day $t$. The coefficient of interest is $\gamma$, which captures the differential change in revenue for treated DMAs after paid search was turned off.
+	
+	The key identification assumption is the \textit{parallel trends assumption}: in the absence of treatment, treated and control DMAs would have experienced similar revenue trends over time. While the groups differ in levels, visual inspection of pre-treatment trends helps assess the plausibility of this assumption.
+	
+	\section{Figures and Visual Evidence}
+	
+	Figure~\ref{fig:revenue} plots average revenue over time separately for treatment and control DMAs. The control group consistently exhibits higher revenue levels, reflecting the exclusion of the largest markets from treatment. Both groups show pronounced weekly seasonality, indicating similar demand patterns across markets.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.85\textwidth]{../output/figures/figure_5_2.png}
+		\caption{Average revenue for treatment and control DMAs over time.
+			The dashed line marks May 22, 2012, when SEM was turned off
+			for the treatment group.}
+		\label{fig:revenue}
+	\end{figure}
+	
+	Because level differences obscure proportional changes, Figure~\ref{fig:logdiff} plots the log difference in average revenue between control and treatment groups. Prior to May 22, the log gap appears relatively stable, lending support to the parallel trends assumption. After the treatment date, the gap increases slightly, suggesting that revenue in treated DMAs declined modestly relative to controls.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.85\textwidth]{../output/figures/figure_5_3.png}
+		\caption{Log-scale average revenue difference between control and treatment
+			groups over time.}
+		\label{fig:logdiff}
+	\end{figure}
+	
+	These visual patterns motivate the formal DID estimation reported below.
+	
+	\section{Results}
+	
+	\input{../output/tables/did_table.tex}
+	
+	The estimated DID coefficient is $\hat{\gamma} = -0.0066$ in log scale. Converting to levels, $\exp(-0.0066) \approx 0.9934$, implying that turning off paid search reduced revenue in treated DMAs by approximately 0.66\% relative to the control group.
+	
+	The estimated standard error is 0.0056, and the 95\% confidence interval is $[-0.0175,\,0.0043]$. Because this interval includes zero, the effect is not statistically significant at the 5\% level. Economically, the magnitude is also quite small.
+	
+	These findings suggest that paid search advertising had only a limited incremental impact on eBay’s revenue during the experiment. For a well-established brand like eBay, many consumers likely access the platform through direct navigation or organic search results. In such settings, paid search ads may primarily capture consumers who would have visited the site anyway, leading to low marginal returns.
+	
+	\section{Discussion and Limitations}
+	
+	Several caveats are worth noting. First, treatment assignment was not fully randomized, as the largest DMAs were excluded. While DID accounts for level differences, unobserved differences in trends could bias the estimate if the parallel trends assumption fails.
+	
+	Second, this replication uses a simplified DID model without additional covariates or fixed effects beyond the basic specification. A richer regression framework could potentially improve precision.
+	
+	Third, the revenue data are scaled and anonymized rather than actual dollar values, limiting external interpretation of economic magnitudes.
+	
+	Despite these limitations, the analysis illustrates how quasi-experimental variation can provide credible causal evidence in marketing contexts where observational comparisons would otherwise be confounded.
+	
+	\section{Conclusion}
+	
+	This replication examines the causal effect of paid search advertising on eBay revenue using a difference-in-differences design. The estimated impact is small (approximately -0.66\%) and statistically insignificant. These findings reinforce the conclusion of Blake et al. (2014): for well-known brands, paid search advertising may yield limited incremental revenue gains.
+	
+	More broadly, the exercise highlights the importance of experimental or quasi-experimental methods in evaluating marketing effectiveness and optimizing advertising expenditures.
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{blake2014}
+		Blake, T., C. Nosko, and S. Tadelis (2014).
+		``Consumer Heterogeneity and Paid Search Effectiveness: A Large-Scale Field Experiment.''
+		\textit{Econometrica}, 83(1): 155--174.
+		
+		\bibitem{taddy2019}
+		Taddy, M. (2019).
+		\textit{Business Data Science}. McGraw-Hill, Chapter 5.
+		
+	\end{thebibliography}
+	
+\end{document}
