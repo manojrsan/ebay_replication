@@ -16,3 +16,12 @@ paper/paper.pdf: paper/paper.tex output/figures/figure_5_2.png output/figures/fi
 
 clean:
 	rm -f output/figures/*.png output/tables/*.tex paper/paper.pdf paper/paper.aux paper/paper.log
+
+# Reflection:
+# The Makefile makes explicit the dependency relationships between raw data, code,
+# generated outputs, and the final paper. Unlike run_all.sh, which simply lists
+# commands to execute in order, the Makefile declares which files depend on which
+# inputs This allows Make to rebuild only the components that changed, improving
+# efficiency and reproducibility. The dependency graph is now visible to collaborators,
+# making the project structure transparent. In contrast, run_all.sh left these
+# relationships implicit and required reverse-engineering to understand the workflow.
